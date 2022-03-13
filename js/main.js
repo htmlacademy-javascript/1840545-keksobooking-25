@@ -62,28 +62,28 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomNumber(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
+const MinValueElement = {
+  GUEST_MIN : 1,
+  ROOMS_MIN : 1,
+  PRICE_MIN : 1000,
+  LAT_MIN : 35.65000,
+  LNG_MIN : 139.70000
 };
 
-const guestsMin = 0;
-const guestsMax = 8;
-const roomsMin = 1;
-const roomsMax = 6;
-const priceMin = 1000;
-const priceMax = 100000;
-const latMin = 35.65000 ;
-const latMax = 35.70000;
-const lngMin = 139.70000;
-const lngMax = 139.80000;
+const MaxValueElement = {
+  GUEST_MAX : 8,
+  ROOMS_MAX : 6,
+  PRICE_MAX : 100000,
+  LAT_MAX : 35.70000,
+  LNG_MAX : 139.80000
+};
+
 
 const getAvatarLink = () => {
   const avatarIndex = getRandomNumber(1, 10) + 1;
-  if (avatarIndex<10) {
-    return ('img/avatars/user0' + avatarIndex + '.png');
-  };
-
-  return ('img/avatars/user' + avatarIndex + '.png');
+  return `img/avatars/user${(`0${  avatarIndex}`).slice(-2)}.png`;
 };
 
 const createAd = () => {
@@ -92,17 +92,17 @@ const createAd = () => {
   };
 
   const location = {
-    lat: getRandomFloat(latMin, latMax, 5),
-    lng: getRandomFloat(lngMin, lngMax, 5)
+    lat: getRandomFloat(MinValueElement.LAT_MIN, MaxValueElement.LAT_MAX, 5),
+    lng: getRandomFloat(MinValueElement.LNG_MIN, MaxValueElement.LNG_MAX, 5)
   };
 
   const offer = {
     title: getRandomArrayElement(TITLES),
-    address: location.lat+', '+location.lng,
-    price: getRandomNumber(priceMin, priceMax),
+    address: `${location.lat}, ${location.lng}`,
+    price: getRandomNumber(MinValueElement.PRICE_MIN, MaxValueElement.PRICE_MAX),
     type: getRandomArrayElement(TYPES),
-    rooms: getRandomNumber(roomsMin, roomsMax),
-    guests: getRandomNumber(guestsMin, guestsMax),
+    rooms: getRandomNumber(MinValueElement.ROOMS_MIN, MaxValueElement.ROOMS_MAX),
+    guests: getRandomNumber(MinValueElement.GUEST_MIN, MaxValueElement.GUEST_MAX),
     checkin: getRandomArrayElement(CHECKIN),
     checkout: getRandomArrayElement(CHECKOUT),
     features: getRandomArrayElement(FEATURES),
@@ -117,6 +117,4 @@ const createAd = () => {
   };
 };
 
-const similarAds = Array.from({length: 10}, createAd);
-
-console.log(similarAds);
+export const similarAds = Array.from({length: 10}, createAd);
