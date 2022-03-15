@@ -1,4 +1,4 @@
-import {getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement} from './until.js';
+import { getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement } from './until.js';
 
 const TITLES = [
   'Уютный дом',
