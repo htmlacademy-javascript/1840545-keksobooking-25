@@ -18,3 +18,14 @@ export const getAvatarLink = () => {
 };
 
 export const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
+export const getUserFeatures = (FEATURES) => {
+  const userFeatures = [];
+  for (let i = 0; i <= getRandomNumber(0, FEATURES.length); i++) {
+    const userFeature = getRandomArrayElement(FEATURES);
+    userFeatures[i] = userFeature;
+  }
+  return userFeatures;
+};
+
+
