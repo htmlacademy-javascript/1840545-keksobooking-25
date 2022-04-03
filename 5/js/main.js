@@ -1,3 +1,5 @@
-import { createAds } from './data.js';
-import './popup.js';
-createAds();
+import { createCards } from './cards.js';
+const arrayCards = createCards();
+const mapCanvas = document.querySelector('#map-canvas');
+mapCanvas.append(arrayCards[0]);
+

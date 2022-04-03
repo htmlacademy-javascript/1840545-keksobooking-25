@@ -1,4 +1,4 @@
-import { getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement, getUserFeatures } from './until.js';
+import { getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement, getUserArray } from './utils.js';
 
 const TITLES = [
   'Уютный дом',
@@ -8,11 +8,11 @@ const TITLES = [
 ];
 
 const TYPES = [
-  { 'palace': 'Дворец' },
-  { 'flat': 'Квартира' },
-  { 'house': 'Дом' },
-  { 'bungalow': 'Бунгало' },
-  { 'hotel': 'Отель' }
+  { palace: 'Дворец' },
+  { flat: 'Квартира' },
+  { house: 'Дом' },
+  { bungalow: 'Бунгало' },
+  { hotel: 'Отель' }
 ];
 
 const CHECKIN = [
@@ -85,9 +85,9 @@ export const createAd = () => {
     guests: getRandomNumber(MinValueElement.GUEST_MIN, MaxValueElement.GUEST_MAX),
     checkin: getRandomArrayElement(CHECKIN),
     checkout: getRandomArrayElement(CHECKOUT),
-    features: getUserFeatures(FEATURES),
+    features: getUserArray(FEATURES),
     description: getRandomArrayElement(DESCRIPTIONS),
-    photos: getRandomArrayElement(PHOTOS)
+    photos: getUserArray(PHOTOS)
   };
 
   return {
@@ -97,6 +97,6 @@ export const createAd = () => {
   };
 };
 
-export const createAds = () => Array.from({ length: 10 }, createAd);
-
+const createSimilarAds = Array.from({ length: 10 }, createAd);
+export { createSimilarAds };
 
