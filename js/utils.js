@@ -18,3 +18,12 @@ export const getAvatarLink = () => {
 };
 
 export const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
+export const getUserArray = (array) => {
+  const userArray = [];
+  for (let i = 0; i <= getRandomNumber(0, array.length); i++) {
+    const userArrayElement = getRandomArrayElement(array);
+    userArray.push(userArrayElement);
+  }
+  return userArray;
+};

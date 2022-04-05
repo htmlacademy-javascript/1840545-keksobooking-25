@@ -1,4 +1,4 @@
-import { getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement } from './until.js';
+import { getRandomNumber, getRandomFloat, getAvatarLink, getRandomArrayElement, getUserArray } from './utils.js';
 
 const TITLES = [
   'Уютный дом',
@@ -8,11 +8,11 @@ const TITLES = [
 ];
 
 const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel'
+  { palace: 'Дворец' },
+  { flat: 'Квартира' },
+  { house: 'Дом' },
+  { bungalow: 'Бунгало' },
+  { hotel: 'Отель' }
 ];
 
 const CHECKIN = [
@@ -66,7 +66,7 @@ const MaxValueElement = {
   LNG_MAX: 139.80000
 };
 
-const createAd = () => {
+export const createAd = () => {
   const author = {
     avatar: getAvatarLink()
   };
@@ -85,9 +85,9 @@ const createAd = () => {
     guests: getRandomNumber(MinValueElement.GUEST_MIN, MaxValueElement.GUEST_MAX),
     checkin: getRandomArrayElement(CHECKIN),
     checkout: getRandomArrayElement(CHECKOUT),
-    features: getRandomArrayElement(FEATURES),
+    features: getUserArray(FEATURES),
     description: getRandomArrayElement(DESCRIPTIONS),
-    photos: getRandomArrayElement(PHOTOS)
+    photos: getUserArray(PHOTOS)
   };
 
   return {
@@ -97,5 +97,6 @@ const createAd = () => {
   };
 };
 
-export const createAds = () => Array.from({ length: 10 }, createAd);
+const createSimilarAds = Array.from({ length: 10 }, createAd);
+export { createSimilarAds };
 
