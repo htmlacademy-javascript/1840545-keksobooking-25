@@ -1,5 +1,5 @@
 const form = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filter');
+const mapFilters = document.querySelector('.map__filters');
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -16,6 +16,7 @@ const price = form.querySelector('#price');
 const type = form.querySelector('#type');
 const timeIn = form.querySelector('#timein');
 const timeOut = form.querySelector('#timeout');
+const sliderElement = form.querySelector('.ad-form__slider');
 
 
 const roomsAndGuests = {
@@ -71,8 +72,10 @@ timeOut.addEventListener('change', () => {
 });
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
   pristine.validate();
+  if (pristine.validate() === false) {
+    evt.preventDefault();
+  }
 });
 
 export const activatePage = () => {
@@ -80,7 +83,41 @@ export const activatePage = () => {
   mapFilters.classList.remove('map__filters--disabled');
 };
 
-export const inactivatePage = () => {
+export const deactivatePage = () => {
   form.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 };
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: Number(price.min),
+    max: 100000
+  },
+  start: Number(price.min),
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  }
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  price.value = sliderElement.noUiSlider.get();
+});
+
+type.addEventListener('change', () => {
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: Number(price.min),
+      max: 100000
+    },
+    start: Number(price.min),
+  });
+});
+
+price.addEventListener('change', () => sliderElement.noUiSlider.set(price.value));
