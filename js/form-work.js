@@ -1,5 +1,10 @@
+import { sendFormData } from './api.js';
 const form = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
+const body = document.querySelector('body');
+const error = document.querySelector('#error').content.querySelector('.error');
+const success = document.querySelector('#success').content.querySelector('.success');
+const submitButton = form.querySelector('.ad-form__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -71,12 +76,6 @@ timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
-form.addEventListener('submit', (evt) => {
-  pristine.validate();
-  if (pristine.validate() === false) {
-    evt.preventDefault();
-  }
-});
 
 export const activatePage = () => {
   form.classList.remove('ad-form--disabled');
@@ -85,6 +84,10 @@ export const activatePage = () => {
 
 export const deactivatePage = () => {
   form.classList.add('ad-form--disabled');
+  mapFilters.classList.add('map__filters--disabled');
+};
+
+export const deactivateFilters = () => {
   mapFilters.classList.add('map__filters--disabled');
 };
 
@@ -121,3 +124,73 @@ type.addEventListener('change', () => {
 });
 
 price.addEventListener('change', () => sliderElement.noUiSlider.set(price.value));
+
+export const createErrorModal = () => {
+  const errorModal = error.cloneNode(true);
+  body.append(errorModal);
+  const errorButton = errorModal.querySelector('.error__button');
+
+  errorModal.addEventListener('click', () => {
+    errorModal.remove();
+  });
+
+  errorButton.addEventListener('click', () => {
+    errorModal.remove();
+  });
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      errorModal.remove();
+    }
+  };
+  document.addEventListener('keydown', onEscKeyDown);
+};
+
+export const createSuccessModal = () => {
+  const successModal = success.cloneNode(true);
+  body.append(successModal);
+
+  successModal.addEventListener('click', () => {
+    successModal.remove();
+  });
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape') {
+      successModal.remove();
+    }
+  };
+  document.addEventListener('keydown', onEscKeyDown);
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+export const setUserFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      const formData = new FormData(evt.target);
+      sendFormData(
+        () => {
+          createSuccessModal();
+          unblockSubmitButton();
+          evt.target.reset();
+        },
+        () => {
+          createErrorModal();
+          unblockSubmitButton();
+        },
+        formData);
+    }
+  });
+};

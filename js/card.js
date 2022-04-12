@@ -38,14 +38,14 @@ const createCard = (data, cardTemplate) => {
 
   const featuresContainer = cardElement.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-  if (offer.features.length > 0) {
+  if (offer.features) {
     getFeatures(featuresList, offer.features);
   }
   else { cardElement.querySelector('.popup__features').remove(); }
 
 
   const photosContainer = cardElement.querySelector('.popup__photos');
-  if (offer.photos.length > 0) {
+  if (offer.photos) {
     createImgs(photosContainer, offer.photos);
   }
   else { cardElement.querySelector('.popup__photos').remove(); }

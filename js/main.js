@@ -1,2 +1,5 @@
-import './form-work.js';
+import { setUserFormSubmit } from './form-work.js';
 import './map.js';
+
+setUserFormSubmit();
+
