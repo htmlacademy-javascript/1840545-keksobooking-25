@@ -77,17 +77,17 @@ timeOut.addEventListener('change', () => {
 });
 
 
-export const activatePage = () => {
+const activatePage = () => {
   form.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
 };
 
-export const deactivatePage = () => {
+const deactivatePage = () => {
   form.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
 };
 
-export const deactivateFilters = () => {
+const deactivateFilters = () => {
   mapFilters.classList.add('map__filters--disabled');
 };
 
@@ -125,7 +125,7 @@ type.addEventListener('change', () => {
 
 price.addEventListener('change', () => sliderElement.noUiSlider.set(price.value));
 
-export const createErrorModal = () => {
+const createErrorModal = () => {
   const errorModal = error.cloneNode(true);
   body.append(errorModal);
   const errorButton = errorModal.querySelector('.error__button');
@@ -139,14 +139,14 @@ export const createErrorModal = () => {
   });
 
   const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    if (evt.key === 'Escape') {
       errorModal.remove();
     }
   };
   document.addEventListener('keydown', onEscKeyDown);
 };
 
-export const createSuccessModal = () => {
+const createSuccessModal = () => {
   const successModal = success.cloneNode(true);
   body.append(successModal);
 
@@ -172,7 +172,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-export const setUserFormSubmit = () => {
+const setUserFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -193,4 +193,14 @@ export const setUserFormSubmit = () => {
         formData);
     }
   });
+};
+
+export {
+  activatePage,
+  deactivatePage,
+  deactivateFilters,
+  createErrorModal,
+  createSuccessModal,
+  unblockSubmitButton,
+  setUserFormSubmit
 };

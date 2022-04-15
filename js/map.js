@@ -1,4 +1,4 @@
-import { activatePage, deactivateFilters, deactivatePage } from '../js/form-work.js';
+import { activatePage, deactivateFilters, deactivatePage, unblockSubmitButton } from '../js/form-work.js';
 import { getAdsData } from './api.js';
 import { createCard } from './card.js';
 import { showAlert } from './utils.js';
@@ -57,7 +57,9 @@ map.on('load',
   getAdsData(
     (adsData) => createAdsOnTheMap(adsData),
     (message) => showAlert(message),
-    deactivateFilters));
+    deactivateFilters),
+  unblockSubmitButton()
+);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

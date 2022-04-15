@@ -3,7 +3,7 @@ const Servers = {
   SENDING: 'https://25.javascript.pages.academy/keksobooking'
 };
 
-export const sendFormData = (onSuccess, onError, formData,) => {
+const sendFormData = (onSuccess, onError, formData) => {
   fetch(
     Servers.SENDING,
     {
@@ -23,7 +23,7 @@ export const sendFormData = (onSuccess, onError, formData,) => {
     });
 };
 
-export const getAdsData = (onSuccess, onError, deactivateFilters) => {
+const getAdsData = (onSuccess, onError, deactivateFilters) => {
   fetch(Servers.RECEIVE)
     .then((response) => {
       if (response.ok) {
@@ -40,3 +40,5 @@ export const getAdsData = (onSuccess, onError, deactivateFilters) => {
       throw new Error(err);
     });
 };
+
+export {getAdsData, sendFormData};
