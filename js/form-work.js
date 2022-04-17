@@ -125,6 +125,11 @@ type.addEventListener('change', () => {
 
 price.addEventListener('change', () => sliderElement.noUiSlider.set(price.value));
 
+const KeyName = {
+  'ESCAPE': 'Escape',
+  'ESC': 'Esc'
+};
+
 const createErrorModal = () => {
   const errorModal = error.cloneNode(true);
   body.append(errorModal);
@@ -139,7 +144,7 @@ const createErrorModal = () => {
   });
 
   const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape') {
+    if (evt.key === KeyName.ESC || evt.key === KeyName.ESCAPE) {
       errorModal.remove();
     }
   };
@@ -155,7 +160,7 @@ const createSuccessModal = () => {
   });
 
   const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape') {
+    if (evt.key === KeyName.ESC || evt.key === KeyName.ESCAPE) {
       successModal.remove();
     }
   };
@@ -194,6 +199,18 @@ const setUserFormSubmit = () => {
     }
   });
 };
+const mapFilter = document.querySelector('.map__filters');
+const previewAvatar = document.querySelector('.ad-form-header__preview img');
+const previewImage = document.querySelector('.ad-form__photo');
+
+form.addEventListener('reset', () => {
+  mapFilter.reset();
+  sliderElement.noUiSlider.updateOptions({
+    start: Number(price.min)
+  });
+  previewImage.innerHTML = '';
+  previewAvatar.src = 'img/muffin-grey.svg';
+});
 
 export {
   activatePage,
@@ -202,5 +219,5 @@ export {
   createErrorModal,
   createSuccessModal,
   unblockSubmitButton,
-  setUserFormSubmit
+  setUserFormSubmit,
 };

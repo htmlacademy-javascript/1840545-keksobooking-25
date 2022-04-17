@@ -1,12 +1,15 @@
 import { activatePage, deactivateFilters, deactivatePage, unblockSubmitButton } from '../js/form-work.js';
 import { getAdsData } from './api.js';
 import { createCard } from './card.js';
-import { showAlert } from './utils.js';
+import { showAlert, debounce } from './utils.js';
+import { filterAds } from './filter.js';
 deactivatePage();
 const TokyoCentr = {
   LAT: 35.68386,
   LNG: 139.75302
 };
+const form = document.querySelector('.ad-form');
+const formFilters = document.querySelector('.map__filters');
 const address = document.querySelector('#address');
 const cardTemplate = document.querySelector('#card')
   .content
@@ -23,50 +26,52 @@ const usualIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const markerGroup = L.layerGroup().addTo(map);
-
-const createAdsOnTheMap = (adsData) => {
-  const createMarker = (data) => {
-    const { location } = data;
-    const lng = location.lng;
-    const lat = location.lat;
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        usualIcon,
-      },
-    );
-
-    marker
-      .addTo(markerGroup)
-      .bindPopup(createCard(data, cardTemplate));
-  };
-
-  if (adsData) {
-    adsData.forEach((data) => {
-      createMarker(data);
-    });
-  }
-};
-
-map.on('load',
-  activatePage(),
-  getAdsData(
-    (adsData) => createAdsOnTheMap(adsData),
-    (message) => showAlert(message),
-    deactivateFilters),
-  unblockSubmitButton()
-);
-
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
 ).addTo(map);
+
+const markerGroup = L.layerGroup().addTo(map);
+
+const createAd = (data) => {
+  const { location } = data;
+  const lng = location.lng;
+  const lat = location.lat;
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      usualIcon,
+    },
+  );
+
+  marker
+    .addTo(markerGroup)
+    .bindPopup(createCard(data, cardTemplate));
+};
+
+const maxAds = 10;
+
+const createAdsOnTheMap = (adsData) => {
+  markerGroup.clearLayers();
+  filterAds(adsData).slice(0, maxAds).forEach((data) => createAd(data));
+};
+
+map.on('load',
+  activatePage(),
+  getAdsData(
+    (adsData) => {
+      createAdsOnTheMap(adsData);
+      formFilters.addEventListener('change', debounce(createAdsOnTheMap.bind(null, adsData)));
+    },
+    (message) => showAlert(message),
+    deactivateFilters),
+  unblockSubmitButton()
+);
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -91,4 +96,14 @@ address.value = `${TokyoCentr.LAT}, ${TokyoCentr.LNG}`;
 
 mainPinMarker.on('move', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
+
+form.addEventListener('reset', () => {
+  mainPinMarker.setLatLng(L.latLng(TokyoCentr.LAT, TokyoCentr.LNG));
+  map.closePopup();
+});
+
+form.addEventListener('submit', () => {
+  mainPinMarker.setLatLng(L.latLng(TokyoCentr.LAT, TokyoCentr.LNG));
+  map.closePopup();
 });

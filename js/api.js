@@ -41,4 +41,4 @@ const getAdsData = (onSuccess, onError, deactivateFilters) => {
     });
 };
 
-export {getAdsData, sendFormData};
+export { getAdsData, sendFormData };
