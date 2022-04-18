@@ -6,25 +6,25 @@ const fileChooserImages = document.querySelector('#images');
 const previewImages = document.querySelector('.ad-form__photo');
 
 fileChooserAvatar.addEventListener('change', () => {
-  const file = fileChooserAvatar.files[0];
-  const fileName = file.name.toLowerCase();
+  const avatarFile = fileChooserAvatar.files[0];
+  const avatarFileName = avatarFile.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILE_TYPES.some((it) => avatarFileName.endsWith(it));
 
   if (matches) {
-    previewAvatar.src = URL.createObjectURL(file);
+    previewAvatar.src = URL.createObjectURL(avatarFile);
   }
 });
 
 fileChooserImages.addEventListener('change', () => {
-  const file = fileChooserImages.files[0];
-  const fileName = file.name.toLowerCase();
+  const imagesFile = fileChooserImages.files[0];
+  const imagesFileName = imagesFile.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILE_TYPES.some((it) => imagesFileName.endsWith(it));
 
   if (matches) {
     const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
+    img.src = URL.createObjectURL(imagesFile);
     img.width = 70;
     img.height = 70;
     img.alt = 'Фотография жилья';
