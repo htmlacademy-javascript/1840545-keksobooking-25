@@ -4,12 +4,14 @@ const filterPrice = filters.querySelector('#housing-price');
 const filterRooms = filters.querySelector('#housing-rooms');
 const filterGuests = filters.querySelector('#housing-guests');
 const filterFeatures = filters.querySelector('#housing-features');
+const MIDDLE_LOW_PRICE = 10000;
+const MIDDLE_HIGH_PRICE = 50000;
 
 const filterByPrice = (adData) => {
   const price = {
-    middle: adData.offer.price >= 10000 && adData.offer.price <= 50000,
-    low: adData.offer.price < 10000,
-    high: adData.offer.price > 50000
+    middle: adData.offer.price >= MIDDLE_LOW_PRICE && adData.offer.price <= MIDDLE_HIGH_PRICE,
+    low: adData.offer.price < MIDDLE_LOW_PRICE,
+    high: adData.offer.price > MIDDLE_HIGH_PRICE
   };
 
   return filterPrice.value === 'any' || price[filterPrice.value];
@@ -22,25 +24,22 @@ const getValuesCheckedFeatures = () =>
 const filterByFeatures = (adData, values) =>
   adData.offer.features && values.every((value) => adData.offer.features.some((feature) => feature === value));
 
-function filterByType(adData) {
-  return filterType.value === adData.offer.type || filterType.value === 'any';
-}
+const filterByType = (adData) =>
+  filterType.value === adData.offer.type || filterType.value === 'any';
+
 const filterByRooms = (adData) =>
   Number(filterRooms.value) === adData.offer.rooms || filterRooms.value === 'any';
 const filterByGuests = (adData) =>
   Number(filterGuests.value) === adData.offer.guests || filterGuests.value === 'any';
 
 export const filterAds = (adsData) => {
-  const filteredAds = [];
-  for (let i = 0; i < adsData.length; i++) {
-    if (filterByType(adsData[i])
-      && filterByPrice(adsData[i])
-      && filterByRooms(adsData[i])
-      && filterByGuests(adsData[i])
-      && filterByFeatures(adsData[i], getValuesCheckedFeatures())
-    ) {
-      filteredAds.push(adsData[i]);
-    }
-  }
+  const filteredAds = adsData.filter((adData) =>
+    filterByType(adData)
+    && filterByPrice(adData)
+    && filterByRooms(adData)
+    && filterByGuests(adData)
+    && filterByFeatures(adData, getValuesCheckedFeatures())
+  );
+
   return filteredAds;
 };

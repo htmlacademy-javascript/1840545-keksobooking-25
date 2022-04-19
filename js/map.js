@@ -98,12 +98,14 @@ mainPinMarker.on('move', (evt) => {
   address.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-form.addEventListener('reset', () => {
-  mainPinMarker.setLatLng(L.latLng(TokyoCentr.LAT, TokyoCentr.LNG));
-  map.closePopup();
-});
+const setFormEvent = (evt) => {
+  form.addEventListener(evt, () => {
+    setTimeout(() => {
+      mainPinMarker.setLatLng(L.latLng(TokyoCentr.LAT, TokyoCentr.LNG));
+      map.closePopup();
+    }, 0);
+  });
+};
 
-form.addEventListener('submit', () => {
-  mainPinMarker.setLatLng(L.latLng(TokyoCentr.LAT, TokyoCentr.LNG));
-  map.closePopup();
-});
+setFormEvent('reset');
+setFormEvent('submit');

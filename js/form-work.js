@@ -5,6 +5,7 @@ const body = document.querySelector('body');
 const error = document.querySelector('#error').content.querySelector('.error');
 const success = document.querySelector('#success').content.querySelector('.success');
 const submitButton = form.querySelector('.ad-form__submit');
+const MAXPRICE = 100000;
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -94,16 +95,16 @@ const deactivateFilters = () => {
 noUiSlider.create(sliderElement, {
   range: {
     min: Number(price.min),
-    max: 100000
+    max: MAXPRICE
   },
   start: Number(price.min),
   step: 100,
   connect: 'lower',
   format: {
-    to: function (value) {
+    to(value) {
       return value.toFixed(0);
     },
-    from: function (value) {
+    from(value) {
       return parseFloat(value);
     }
   }
@@ -117,7 +118,7 @@ type.addEventListener('change', () => {
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: Number(price.min),
-      max: 100000
+      max: MAXPRICE
     },
     start: Number(price.min),
   });
@@ -147,6 +148,7 @@ const createErrorModal = () => {
     if (evt.key === KeyName.ESC || evt.key === KeyName.ESCAPE) {
       errorModal.remove();
     }
+    document.removeEventListener('keydown', onEscKeyDown);
   };
   document.addEventListener('keydown', onEscKeyDown);
 };
@@ -163,6 +165,7 @@ const createSuccessModal = () => {
     if (evt.key === KeyName.ESC || evt.key === KeyName.ESCAPE) {
       successModal.remove();
     }
+    document.removeEventListener('keydown', onEscKeyDown);
   };
   document.addEventListener('keydown', onEscKeyDown);
 };

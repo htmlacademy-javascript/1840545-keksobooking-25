@@ -11,16 +11,26 @@ const getFeatures = (featuresList, offerFeatures) => {
 };
 
 const createImgs = (photosContainer, offerPhotos) => {
-  photosContainer.querySelector('.popup__photo').src = offerPhotos[0];
-  for (let i = 1; i < offerPhotos.length - 1; i++) {
+  photosContainer.innerHTML = '';
+
+  offerPhotos.forEach((offerPhoto) => {
     const createImg = document.createElement('img');
-    createImg.src = offerPhotos[i];
+    createImg.src = offerPhoto;
     createImg.className = 'popup__photo';
     createImg.width = 45;
     createImg.height = 40;
     createImg.alt = 'Фотография жилья';
     photosContainer.appendChild(createImg);
-  }
+  });
+};
+
+
+const housesType = {
+  flat: 'Квартира',
+  hotel: 'Отель',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  palace: 'Дворец'
 };
 
 const createCard = (data, cardTemplate) => {
@@ -30,7 +40,7 @@ const createCard = (data, cardTemplate) => {
   cardElement.querySelector('.popup__title').textContent = offer.title;
   cardElement.querySelector('.popup__text--address').textContent = offer.address;
   cardElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  cardElement.querySelector('.popup__type').textContent = Object.values(offer.type);
+  cardElement.querySelector('.popup__type').textContent = housesType[offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   cardElement.querySelector('.popup__description').textContent = offer.description;
@@ -48,7 +58,7 @@ const createCard = (data, cardTemplate) => {
   if (offer.photos) {
     createImgs(photosContainer, offer.photos);
   }
-  else { cardElement.querySelector('.popup__photos').remove(); }
+  else { photosContainer.remove(); }
 
   return cardElement;
 };
